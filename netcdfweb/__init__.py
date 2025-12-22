@@ -1,6 +1,7 @@
 import os
 
-from flask import Flask, render_template
+from flask import Flask, render_template, g
+from . import db
 
 
 def create_app(test_config=None):
@@ -24,9 +25,17 @@ def create_app(test_config=None):
     except OSError:
         pass
 
+    # initialize the database
+    db.init_app(app)
+
+    from . import nclist, nctodb
+    app.register_blueprint(nclist.bp)
+    app.register_blueprint(nctodb.bp)
+
     # a simple page that says hello
     @app.route('/')
     def index():
         return render_template("index.html")
 
     return app
+

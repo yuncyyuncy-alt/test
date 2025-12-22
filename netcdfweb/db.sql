@@ -1,5 +1,8 @@
-create database netcdfweb;
+-- create database netcdfweb;
 
+-- 기존에 테이블에 있다면 삭제부터 한다. 
+DROP TABLE IF EXISTS `netcdf_images`;
+DROP TABLE IF EXISTS `netcdf_files`;
 
 CREATE TABLE `netcdf_files` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -47,7 +50,7 @@ CREATE TABLE `netcdf_files` (
   KEY `idx_lon_min` (`lon_min`),
   KEY `idx_lon_max` (`lon_max`),
   KEY `idx_tile_generated` (`tile_generated`)
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='NetCDF 파일 메타데이터 테이블'
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='NetCDF 파일 메타데이터 테이블';
 
 
 
@@ -68,4 +71,4 @@ CREATE TABLE `netcdf_images` (
   KEY `idx_image_type` (`image_type`),
   KEY `idx_created_at` (`created_at`),
   CONSTRAINT `netcdf_images_ibfk_1` FOREIGN KEY (`file_id`) REFERENCES `netcdf_files` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='NetCDF 파일의 생성된 이미지 정보'
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='NetCDF 파일의 생성된 이미지 정보';

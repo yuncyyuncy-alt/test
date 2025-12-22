@@ -1,6 +1,7 @@
 import pymysql
 from pymysql.cursors import DictCursor
 from flask import current_app, g
+import click
 
 # 기본 MySQL 접속 정보 (config 값이 없을 때 사용)
 DB_DEFAULTS = {
@@ -36,3 +37,42 @@ def close_db(e=None):
   db = g.pop("db", None)
   if db is not None:
     db.close()
+
+def init_db():
+    '''
+    데이터베이스 초기화
+    '''
+    db = get_db()
+    with current_app.open_resource('db.sql') as f:
+       sql = f.read().decode('utf8')
+
+    with db.cursor() as cursor:
+      for statement in sql.split(';'):
+        stmt = statement.strip()
+        if not stmt:
+          continue
+        cursor.execute(stmt)
+
+    db.commit()
+
+@click.command('init-db')
+def init_db_command():
+    """
+    Clear the existing data and create new tables.
+
+
+    테이블에서 실행하는 명령어:
+    flask --app netcdfweb init-db
+    """
+    init_db()
+    click.echo('Initialized the database.')
+
+def init_app(app):
+    '''
+    앱앱 초기화
+    '''
+    app.teardown_appcontext(close_db)
+    app.cli.add_command(init_db_command)
+    
+
+
