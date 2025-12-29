@@ -13,15 +13,16 @@
         </div>
     </div>
     <div>
-        <form method="post" action="/nctodb/upload">
+        <form method="post" action="/nctodb/upload" enctype="multipart/form-data">
             <!-- directory 선택 대화상자 표시 -->
-            <input type="file" name="file" accept="".nc" value="NETCDF 파일 선택..." webkitdirectory multiple placeholder="NetCDF 파일 선택..">
+            <input type="file" id="dirInput" name="file" accept=".nc" value="NETCDF 파일 선택..." webkitdirectory multiple placeholder="NetCDF 파일 선택..">
             
             <!-- 업로드 버튼-->
             <button type="submit" name="upload">Upload</button>
 
         </form>
     </div>
+
 
 </body>
 </html>
